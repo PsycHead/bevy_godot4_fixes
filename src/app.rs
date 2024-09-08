@@ -44,7 +44,11 @@ impl INode for BevyApp {
         }
 
         let mut app = App::new();
-        (APP_BUILDER_FN.lock().unwrap().as_mut().unwrap())(&mut app);
+        (APP_BUILDER_FN
+            .lock()
+            .expect("Could not lock app builder fn in BevyApp impl")
+            .as_mut()
+            .expect("Could not acquire mut ref of app builder fn"))(&mut app);
         app.add_plugins(bevy::core::TaskPoolPlugin::default())
             .add_plugins(bevy::log::LogPlugin::default())
             .add_plugins(bevy::core::TypeRegistrationPlugin)
